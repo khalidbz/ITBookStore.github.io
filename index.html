@@ -1,0 +1,258 @@
+<hedaer>
+<title> IT Book Store</title>
+</header>
+<ul id = "header">
+  <li id = "site-name">IT Book Store</li>
+  <li><a href = "http://amazon.com">Home</a></li>
+  <li><a href = "#">Sing in</a></li>
+</ul>
+<body>
+	<div id="sort-wrap">
+    <br>
+	<br>
+		<h5>Sort By</h5>
+		<select id="sort-books">
+			<option value="priceHigh">Price high to low</option>
+            <option value="priceLow">Price low to high</option>
+             <option value = "reviews"> Reviews</option>
+            <option value = "rating">Rating</option>
+         </select>
+     </div>
+	<ul id="books-list">
+	</ul>
+</body>
+<style>
+#header,li{
+  display : inline;
+  margin-right: 110px;
+}
+#header{
+  background-color: #fef2ad;
+  padding: 3%;
+}
+#site-name{
+  background-color: #a8efff;
+  padding: 20px;
+  font-family: ariel;
+   font-size: 40px;
+font-style: bold;
+  
+}
+img{
+  height: 200px;
+  margin: 30px;
+  padding-right: 2300px;
+}
+#books-list{
+  margin-bottom: 20px;
+  background-color: #ededed;
+  border: 1px solid;
+}
+li{
+  font-family : Arial;
+  font-style: bold;
+}
+h5{
+  font-family : Arial;
+}
+
+
+</style>
+<script>
+var books = [
+    {
+        title: 'React Quickly: Painless web apps with React, JSX, Redux, and GraphQL',
+        date_published: 'Sep 28, 2017',
+        author: 'Azat Mardan',
+        reviews: 34,
+        rate: 4.7,
+        img: 'https://images-na.ssl-images-amazon.com/images/I/5159foIB0EL._AC_US218_.jpg',
+      price: 49.99
+       
+    }, {
+        title: 'The Principles of Object-Oriented JavaScript',
+        date_published: 'Feb 14, 2014',
+        author: 'Nicholas C. Zakas',
+        reviews: 56,
+        rate: 4.6,
+        img: 'https://images-na.ssl-images-amazon.com/images/I/51nCY21njKL._AC_US218_.jpg',
+      price: 24.95
+    },{
+       title: 'Mastering Node.js - Second Edition: Build robust and scalable real-time server-side web applications efficiently',
+        date_published: 'Dec 29, 2017',
+        author: 'Sandro Pasquali',
+        reviews: 2,
+        rate: 5,
+        img: 'https://images-na.ssl-images-amazon.com/images/I/41bhyKrhsCL.jpg',
+      price: 49.99
+    },{
+      title: 'Test-Driven Java Development',
+        date_published: 'August 27, 2015',
+        author: 'Viktor Farcic, Alex Garcia',
+        reviews: 9,
+        rate: 4.3,
+        img: 'https://images-na.ssl-images-amazon.com/images/I/51HbvKJBywL.jpg',
+      price: 44.99
+    },{
+      title: 'Murachs MySQL',
+        date_published: 'August 1, 2016',
+        author: 'Joel Murach',
+        reviews: 65,
+        rate: 4.6,
+        img: 'https://images-na.ssl-images-amazon.com/images/I/51%2BfhSHISAL.jpg',
+     price: 54.50
+    },{
+      title: 'SOFTWARE ENGINEERING PARADIGM: Principles and Practices',
+        date_published: 'June 8, 2010',
+        author: 'Rizwan Qureshi',
+        reviews: 0,
+        rate: 0,
+        img: 'https://images-na.ssl-images-amazon.com/images/I/714DO14FGPL.jpg',
+     price: 81.40
+    }
+
+    // add more book items here
+]
+// Default sort
+sortByReviews()
+upDateDOM()
+
+function createBookItem(bookObj) {
+    /*
+      <li>
+        <a href="#">React Quickly: Painless web apps with React, JSX, Redux, and GraphQL</a>
+        <img src="https://images-na.ssl-images-amazon.com/images/I/5159foIB0EL._AC_US218_.jpg"/>
+          <ul>
+            <li>Sep 28, 2017 </li>
+            <li>Azat Mardan</li>
+            <li>34 reviews</li>
+            <li>4.7 stars</li>
+          </ul>
+      </li>
+    */
+    var liElem = document.createElement('li')
+    var a = document.createElement('a')
+    var aText = document.createTextNode(bookObj.title)
+    var auth = document.createTextNode(" by " + bookObj.author)
+    a.appendChild(aText)
+    a.href = bookObj.url
+    a.title = bookObj.title
+    liElem.appendChild(a)
+    liElem.appendChild(auth)
+
+  // create the remaining elements
+    var img = document.createElement('img')
+    var aImg = document.createTextNode(bookObj.img)
+    img.src = bookObj.img
+    img.appendChild(aImg)
+    liElem.appendChild(img)
+    
+    var ulElem = document.createElement("ul")
+    var liElem2 = document.createElement("li")
+    liElem.appendChild(ulElem)
+    
+    var liElem3 = document.createElement("li")
+    var aDate = document.createTextNode("Published Date: "+bookObj.date_published)
+    liElem3.appendChild(aDate)
+    ulElem.appendChild(liElem3)
+    
+    var liElem6 = document.createElement("li")
+    var aPrice = document.createTextNode("Price: " + bookObj.price + "$")
+    liElem6.appendChild(aPrice)
+    ulElem.appendChild(liElem6)
+    
+    var liElem4 = document.createElement("li")
+    var aReview = document.createTextNode("Reviews: "+ bookObj.reviews)
+    liElem4.appendChild(aReview)
+    ulElem.appendChild(liElem4)
+    
+    var liElem5 = document.createElement("li")
+    var aRate = document.createTextNode("Rating: "+bookObj.rate)
+    liElem5.appendChild(aRate)
+    ulElem.appendChild(liElem5)
+    
+    var aLine = document.createElement("hr")
+    liElem.appendChild(aLine)
+    
+    return liElem
+}
+
+function sortByReviews(){
+    books.sort(function (a, b) {
+        // implment your compare function here
+      if(a.reviews < b.reviews){
+        return 1;
+      }if(a.reviews > b.reviews){
+        return -1;
+      }
+        return 0;
+      
+    })
+
+}
+
+function sortByRating(){
+        // implment your compare function here
+      books.sort(function (a, b) {
+      if(a.rate < b.rate){
+        return 1;
+      }if(a.rate > b.rate){
+        return -1;
+      }
+        return 0;
+      
+    })
+}
+function sortByPriceLow(){
+  books.sort(function(a,b){
+    if(a.price < b.price){
+      return -1;
+    }if(a.price > b.price){
+      return 1;
+    }
+    return 0;
+  })
+}
+
+function sortByPriceHigh(){
+  books.sort(function(a,b){
+    if(a.price < b.price){
+      return 1;
+    }if(a.price > b.price){
+      return -1;
+    }
+    return 0;
+  })
+}
+
+function upDateDOM() {
+    var ulBooks = document.getElementById('books-list')
+    ulBooks.innerHTML = ''
+    for (item of books) {
+        ulBooks.appendChild(createBookItem(item))
+    }
+}
+
+// Sort by, select event
+var select = document.getElementById("sort-books")
+select.onchange = function () {
+    if (select.value === 'reviews') {
+        sortByReviews()
+        upDateDOM()
+    }
+    else if (select.value === 'priceLow') {
+        sortByPriceLow()
+        upDateDOM()
+    }
+  
+   else if(select.value === 'priceHigh') {
+        sortByPriceHigh()
+        upDateDOM()
+   }
+    else if (select.value === 'rating') {
+        sortByRating()
+        upDateDOM()
+    }
+}
+</script>
+</body>
